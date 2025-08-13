@@ -1,0 +1,36 @@
+name: API Security Maturity Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  validate-security-maturity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install yq to parse YAML
+        run: sudo apt-get update && sudo apt-get install -y yq
+
+      - name: Calculate security maturity score
+        id: calculate_score
+        run: |
+          # Use yq to sum all the '1's in the YAML file
+          TOTAL_SCORE=$(yq e '.api_security_maturity | .[] | .[] | select(. == 1) | count' contracts/df/tr-test-petstore-java/openapi.yaml)
+          echo "Current API security maturity score: $TOTAL_SCORE"
+          echo "::set-output name=score::$TOTAL_SCORE"
+
+      - name: Check against minimum threshold
+        run: |
+          MINIMUM_SCORE=15  # Adjust this threshold as needed
+          if [ "${{ steps.calculate_score.outputs.score }}" -lt "$MINIMUM_SCORE" ]; then
+            echo "API security maturity score is below the minimum threshold of $MINIMUM_SCORE."
+            echo "Please update your .api-security.yaml to increase the score before merging."
+            exit 1
+          else
+            echo "API security maturity score meets the minimum threshold."
+          fi
