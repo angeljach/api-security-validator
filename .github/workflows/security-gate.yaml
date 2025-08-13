@@ -20,7 +20,7 @@ jobs:
         id: calculate_score
         run: |
           # Use yq to sum all the '1's in the YAML file
-          TOTAL_SCORE=$(yq e '.api_security_maturity | .[] | .[] | select(. == 1) | count' contracts/df/tr-test-petstore-java/openapi.yaml)
+          TOTAL_SCORE=$(yq e '.api_security_maturity | .[] | .[] | select(. == 1) | count' contracts/df/tr-test-petstore-java/.api-security.yaml)
           echo "Current API security maturity score: $TOTAL_SCORE"
           echo "::set-output name=score::$TOTAL_SCORE"
 
