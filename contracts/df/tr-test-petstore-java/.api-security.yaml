@@ -16,19 +16,19 @@ api_security_maturity:
     input_validation_and_sanitization: 1
     limit_data_in_responses: 1
     data_encrypted_at_rest: 0
-    protection_against_bola: 0
+    protection_against_bola: 1
     
   # III. Threat and Vulnerability Management
   threat_vulnerability_management:
-    protected_by_waf: 0
+    protected_by_waf: 1
     rate_limiting_is_implemented: 1
-    regular_vulnerability_scans: 0
+    regular_vulnerability_scans: 1
     protection_against_ssrf: 0
 
   # IV. Operational Security
   operational_security:
-    security_events_are_logged: 0
-    secure_secrets_management: 0
-    no_sensitive_info_in_errors: 0
+    security_events_are_logged: 1
+    secure_secrets_management: 1
+    no_sensitive_info_in_errors: 1
     documented_incident_response: 0
     security_in_ci_cd: 1
