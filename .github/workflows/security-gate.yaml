@@ -13,16 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install yq to parse YAML
-        run: sudo apt-get update && sudo apt-get install -y yq
+      - name: Install yq (Go version)
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
 
       - name: Calculate security maturity score
         id: calculate_score
         run: |
           # Use yq to sum all the '1's in the YAML file
-          TOTAL_SCORE=$(yq e '.api_security_maturity | .[] | .[] | select(. == 1) | count' contracts/df/tr-test-petstore-java/openapi.yaml)
-          echo "Current API security maturity score: $TOTAL_SCORE"
-          echo "::set-output name=score::$TOTAL_SCORE"
+          TOTAL_SCORE=$(yq e '.. | select(tag == "!!int" and . == 1)' contracts/df/tr-test-petstore-java/.api-security.yaml | wc -l)
+          echo "🔒 API Security Maturity Score: $TOTAL_SCORE"
+          echo "score=$TOTAL_SCORE" >> $GITHUB_OUTPUT
 
       - name: Check against minimum threshold
         run: |

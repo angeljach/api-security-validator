@@ -1,0 +1,34 @@
+# .api-security.yaml
+
+api_security_maturity:
+  # I. Authentication and Authorization
+  authentication_authorization:
+    all_endpoints_require_auth: 1
+    use_oauth2_oidc: 1
+    tokens_are_short_lived: 0  # Example: Not yet implemented
+    authorization_per_request: 1
+    fine_grained_access_control: 1
+    protection_against_brute_force: 1
+    
+  # II. Data Security
+  data_security:
+    traffic_is_encrypted: 1
+    input_validation_and_sanitization: 1
+    limit_data_in_responses: 1
+    data_encrypted_at_rest: 0
+    protection_against_bola: 1
+    
+  # III. Threat and Vulnerability Management
+  threat_vulnerability_management:
+    protected_by_waf: 1
+    rate_limiting_is_implemented: 1
+    regular_vulnerability_scans: 1
+    protection_against_ssrf: 0
+
+  # IV. Operational Security
+  operational_security:
+    security_events_are_logged: 1
+    secure_secrets_management: 1
+    no_sensitive_info_in_errors: 1
+    documented_incident_response: 0
+    security_in_ci_cd: 1
